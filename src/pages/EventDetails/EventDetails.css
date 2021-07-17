@@ -60,3 +60,8 @@ p {
   text-decoration: none;
   word-wrap: break-word;
 }
+span svg,
+Button svg {
+  font-size: 2.5em;
+  margin-right: 8px;
+}
