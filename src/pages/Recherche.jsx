@@ -1,14 +1,11 @@
 import { Form, Button, Card } from 'react-bootstrap';
 import { useRef, useState, useEffect } from 'react';
-
 import { Link } from 'react-router-dom';
 import DayJS from 'react-dayjs';
-// import DATA from '../_data/que-faire-a-paris-.json';
 
 function Recherche() {
   const inputRef = useRef();
   const [records, setRecords] = useState(null);
-  const [favorites, setFavorites] = useState([]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -21,6 +18,9 @@ function Recherche() {
         setRecords(result.records);
       });
   }
+
+  // ajout d'un événement en favoris dans localStorage
+  const [favorites, setFavorites] = useState(null);
   useEffect(() => {
     const eventFavorites = JSON.parse(
       localStorage.getItem('paris-event-app-favorites')
@@ -34,7 +34,7 @@ function Recherche() {
     localStorage.setItem('paris-event-app-favorites', JSON.stringify(items));
   };
 
-  const AddFavoriteEvent = (event) => {
+  const addFavoriteEvent = (event) => {
     const newFavoriteList = [...favorites, event];
     setFavorites(newFavoriteList);
     saveTolacalStorage(newFavoriteList);
@@ -63,9 +63,7 @@ function Recherche() {
             Rechercher
           </Button>
         </Form>
-
         <hr />
-
         {records && (
           <>
             <h3>Résultats de la recherche</h3>
@@ -75,7 +73,7 @@ function Recherche() {
               ) : (
                 records.map((record) => (
                   <Link
-                    class="Link"
+                    className="Link"
                     to={`event/${record.record.id}`}
                     key={record.record.id}
                   >
@@ -89,9 +87,35 @@ function Recherche() {
                       />
                       <Card.Body>
                         <Card.Title>{record.record.fields.title}</Card.Title>
-                        <p>{record.record.fields.date_start}</p>
-                        <Card.Text>{record.record.fields.lead_text}</Card.Text>
+                        <p>
+                          <DayJS format="DD / MM / YYYY à hh : mm : ss">
+                            {record.record.fields.date_start}
+                          </DayJS>
+                        </p>
+                        <Card.Text
+                          dangerouslySetInnerHTML={{
+                            __html: record.record.fields.description.substring(
+                              0,
+                              120
+                            ),
+                          }}
+                        />
                       </Card.Body>
+                      <div className="p-3" onClick={addFavoriteEvent}>
+                        <svg
+                          width="1em"
+                          height="1em"
+                          viewBox="0 0 16 16"
+                          className="bi bi-heart-fill"
+                          fill="red"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
+                          />
+                        </svg>
+                      </div>
                     </Card>
                   </Link>
                 ))
