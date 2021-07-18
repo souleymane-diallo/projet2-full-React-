@@ -9,7 +9,7 @@ function Favoris() {
    */
   useEffect(() => {
     setFavorisEvent(JSON.parse(localStorage.getItem('Eventfavorites')));
-    console.log(favorisEvent);
+    // console.log(favorisEvent);
   }, []);
 
   return (
@@ -19,9 +19,7 @@ function Favoris() {
         {favorisEvent && favorisEvent.length === 0 ? (
           <p>Aucun événement n'a été Sauvegardé</p>
         ) : (
-          favorisEvent.map((favori) => (
-            <CardEvent key={favori.id} record={favori} />
-          ))
+          favorisEvent.map((favori) => <CardEvent recordData={favori} />)
         )}
       </div>
     </section>
