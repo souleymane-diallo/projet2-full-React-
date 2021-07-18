@@ -4,7 +4,7 @@ import CardEvent from '../components/CardEvent';
 
 function Recherche() {
   const inputRef = useRef();
-  const [records, setRecords] = useState(null);
+  const [recordDataSearch, setRecords] = useState(null);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -41,16 +41,18 @@ function Recherche() {
           </Row>
         </Form>
         <hr />
-        {records && (
+        {recordDataSearch && (
           <>
             <h3 className="text-center">Résultats de la recherche</h3>
             <section className="d-flex flex-wrap">
-              {records.length === 0 ? (
+              {recordDataSearch.length === 0 ? (
                 <p className="text-center">
                   Aucun resultat pour cette recherche...
                 </p>
               ) : (
-                records.map((record) => <CardEvent record={record} />)
+                recordDataSearch.map((value) => (
+                  <CardEvent recordData={value} />
+                ))
               )}
             </section>
           </>
